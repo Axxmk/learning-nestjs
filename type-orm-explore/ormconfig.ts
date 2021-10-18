@@ -7,7 +7,7 @@ const config: SqliteConnectionOptions = {
 	synchronize: true,
 	migrations: ['dist/src/db/migrations/*.js'],
 	cli: {
-		migrationsDir: 'scr/db/migrations',
+		migrationsDir: 'src/db/migrations',
 	},
 }
 
