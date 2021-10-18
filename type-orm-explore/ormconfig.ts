@@ -4,10 +4,10 @@ const config: SqliteConnectionOptions = {
 	type: 'sqlite',
 	database: 'db',
 	entities: ['dist/src/**/*.entity.js'],
-	synchronize: true,
-	migrations: ['dist/src/db/migrations/*.js'],
+	synchronize: true,	// for development
+	migrations: ['dist/src/db/migrations/*.js'],	// location that migrations will ba loaded
 	cli: {
-		migrationsDir: 'src/db/migrations',
+		migrationsDir: 'src/db/migrations',		// location that migrations will be created
 	},
 }
 
