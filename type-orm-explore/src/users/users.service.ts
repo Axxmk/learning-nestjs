@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -13,9 +13,7 @@ export class UsersService {
 	) { }
 
 	getAll(): Promise<User[]> {
-		return this.usersRepository.find({
-			relations: ['pets']
-		});	   // SELECT * FROM users JOIN pets
+		return this.usersRepository.find({ relations: ['pets'] });	   // SELECT * FROM users JOIN pets
 	}
 
 	async getOneById(id: number): Promise<User> {
@@ -29,10 +27,15 @@ export class UsersService {
 		}
 	}
 
-	createUser(createUserDto: CreateUserDto): Promise<User> {
-		const newUser = this.usersRepository.create({ ...createUserDto });	 // const newUser = new User();
-
-		return this.usersRepository.save(newUser);	 // INSERT
+	async createUser(createUserDto: CreateUserDto): Promise<User> {
+		try {
+			const newUser = this.usersRepository.create({ ...createUserDto });	 // const newUser = new User();
+			return await this.usersRepository.save(newUser); 	// INSERT
+		}
+		catch (err) {
+			// handle an error
+			throw new BadRequestException(err.message);
+		}
 	}
 
 	async updateUser(id: number, updateUserDto: UpdateUserDto): Promise<User> {
