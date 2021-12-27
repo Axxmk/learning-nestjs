@@ -10,7 +10,7 @@ import { MeetingsModule } from './meetings/meetings.module';
   imports: [TypeOrmModule.forRoot({
     type: 'sqlite',
     database: '../db',
-    entities: ['dist/src/**/*.entity.js'],
+    entities: ['dist/**/*.entity.js'],
     synchronize: true,
     logging: true,
   }), EmployeesModule, TasksModule, MeetingsModule],

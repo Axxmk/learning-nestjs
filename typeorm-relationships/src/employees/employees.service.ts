@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CreateContactInfoDto } from './dto/create-contact-info.dto';
 import { CreateEmployeeDto } from './dto/create-employee.dto';
 import { UpdateEmployeeDto } from './dto/update-employee.dto';
 import { ContactInfo } from './entities/contact-info.entity';
@@ -13,16 +14,30 @@ export class EmployeesService {
 		@InjectRepository(ContactInfo) private contactInfoRepo: Repository<ContactInfo>
 	) { }
 
-	create(createEmployee: CreateEmployeeDto) {
-		return 'This action adds a new employee';
+	async createEmployee(createEmployee: CreateEmployeeDto): Promise<Employee> {
+		try {
+			const employee = this.employeeRepo.create({ ...createEmployee });
+			return await this.employeeRepo.save(employee);
+		}
+		catch (err) {
+			// throw error to controller
+			throw new Error();
+		}
 	}
 
-	findAll() {
-		return `This action returns all employees`;
+	async findAll(): Promise<Employee[]> {
+		return await this.employeeRepo.find();
 	}
 
-	findOne(id: number) {
-		return `This action returns a #${id} employee`;
+	async findOneById(id: number): Promise<Employee> {
+		try {
+			const employee = await this.employeeRepo.findOneOrFail(id);
+			return employee;
+		}
+		catch (err) {
+			// throw error to controller
+			throw new Error();
+		}
 	}
 
 	update(id: number, updateEmployee: UpdateEmployeeDto) {
@@ -31,5 +46,19 @@ export class EmployeesService {
 
 	remove(id: number) {
 		return `This action removes a #${id} employee`;
+	}
+
+
+	//* Contact-info methods
+
+	async createContactInfo(createContactInfoDto: CreateContactInfoDto) {
+		try {
+			const contact = this.contactInfoRepo.create({ ...createContactInfoDto });
+			return await this.contactInfoRepo.save(contact);
+		}
+		catch (err) {
+			// throw error to controller
+			throw new Error();
+		}
 	}
 }
