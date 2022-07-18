@@ -1,2 +1,2 @@
 # learning-nestjs
-NestjJS Crash Course to understand the fundamentals
+Nest.JS Crash Course to understand the fundamental concepts
